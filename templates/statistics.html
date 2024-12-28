@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Статистика</h1>
+    <ul>
+        <li>Общее количество пользователей: {{ stats.total_users }}</li>
+        <li>Количество администраторов: {{ stats.admin_count }}</li>
+        <li>Количество работников: {{ stats.worker_count }}</li>
+        <li>Общее количество продуктов: {{ stats.total_products }}</li>
+        <li>Общее количество покупателей: {{ stats.total_customers }}</li>
+    </ul>
+{% endblock %}

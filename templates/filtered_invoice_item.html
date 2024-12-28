@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Invoice Items</h1>
+    
+    <!-- Форма фильтрации -->
+    <form method="GET" action="/filtered_invoice_items">
+        <label for="inv">Invoice Id</label>
+        <input type="text" name="inv" id="inv" value="{{ request.args.get('inv', '') }}">
+    
+        <label for="name">Product Name</label>
+        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
+    
+        <label for="category">Category</label>
+        <input type="text" name="category" id="category" value="{{ request.args.get('category', '') }}">
+    
+        <label for="price_min">Min Price</label>
+        <input type="number" step="0.01" name="price_min" id="price_min" value="{{ request.args.get('price_min', '') }}">
+    
+        <label for="price_max">Max Price</label>
+        <input type="number" step="0.01" name="price_max" id="price_max" value="{{ request.args.get('price_max', '') }}">
+    
+        <button type="submit">Search</button>
+    </form>
+    
+    <style>
+        form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; 
+        }
+    
+        form label,
+        form input,
+        form button {
+            margin: 0;
+        }
+    
+        form label {
+            margin-right: 5px; 
+        }
+    
+        form input {
+            width: auto;
+        }
+    
+        form button {
+            align-self: center; 
+        }
+    </style>
+    
+
+    <!-- Таблица с результатами -->
+    <table>
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice_item, product in invoice_items %}
+            <tr>
+                <td>{{ invoice_item.invoice_id }}</td>
+                <td>{{ product.product_id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('filtered_invoice_items', 
+                                page=1, 
+                                inv=request.args.get('inv', ''), 
+                                name=request.args.get('name', ''), 
+                                category=request.args.get('category', ''), 
+                                price_min=request.args.get('price_min', ''), 
+                                price_max=request.args.get('price_max', '')) }}">First</a>
+            <a href="{{ url_for('filtered_invoice_items', 
+                                page=pagination.prev_num, 
+                                inv=request.args.get('inv', ''), 
+                                name=request.args.get('name', ''), 
+                                category=request.args.get('category', ''), 
+                                price_min=request.args.get('price_min', ''), 
+                                price_max=request.args.get('price_max', '')) }}">Prev</a>
+        {% endif %}
+        
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+    
+        {% if pagination.has_next %}
+            <a href="{{ url_for('filtered_invoice_items', 
+                                page=pagination.next_num, 
+                                inv=request.args.get('inv', ''), 
+                                name=request.args.get('name', ''), 
+                                category=request.args.get('category', ''), 
+                                price_min=request.args.get('price_min', ''), 
+                                price_max=request.args.get('price_max', '')) }}">Next</a>
+            <a href="{{ url_for('filtered_invoice_items', 
+                                page=pagination.pages, 
+                                inv=request.args.get('inv', ''), 
+                                name=request.args.get('name', ''), 
+                                category=request.args.get('category', ''), 
+                                price_min=request.args.get('price_min', ''), 
+                                price_max=request.args.get('price_max', '')) }}">Last</a>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
+{% endblock %}

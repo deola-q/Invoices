@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Ответственные за накладные</h1>
+    <form method="POST" action="/add_responsible">
+        <div class="form-group" style="display: flex; gap: 10px;">
+            <!-- <input type="number" name="invoice_number" placeholder="Invoice Number" required>
+            <input type="text" name="name" placeholder="First Name" required>
+            <input type="text" name="surname" placeholder="Surname" required>
+            <input type="text" name="lastname" placeholder="Last Name">
+            <input type="number" name="shift_code" placeholder="Shift Code" required>
+            <button type="submit">Add</button> -->
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <!-- <th>Invoice Number</th> -->
+                <th>First Name</th>
+                <th>Surname</th>
+                <th>Last Name</th>
+                <th>Shift Code</th>
+                <!-- <th>Actions</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.employee_id }}</td>
+                <!-- <td>{{ employee.invoice_number }}</td> -->
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.surname }}</td>
+                <td>{{ employee.lastname or "N/A" }}</td>
+                <td>{{ employee.shift_code }}</td>
+                <!-- <td>
+                    <form method="POST" action="/delete_responsible/{{ employee.employee_id }}" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

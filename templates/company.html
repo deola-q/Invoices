@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Компании-производители</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+{% if user_role == 'admin' %}
+<form method="POST" action="/add_company" id="add-company-form">
+    <div class="form-group" style="display: flex; gap: 10px;">
+        <input type="text" name="brand_name" id="brand-name" placeholder="Brand Name" required>
+        <input type="text" name="short_name" id="short-name" placeholder="Short Name" required>
+        <select name="category" id="category" required>
+            <option value="AA">AA</option>
+            <option value="AB">AB</option>
+            <option value="BA">BA</option>
+            <option value="BB">BB</option>
+            <option value="AC">AC</option>
+            <option value="CA">CA</option>
+            <option value="BC">BC</option>
+            <option value="CB">CB</option>
+            <option value="CC">CC</option>
+        </select>
+        <select name="type_c" id="type-c" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+        </select>
+        <button type="submit">Add</button>
+    </div>
+    <div id="error-message" style="color: red; font-size: 0.9em;"></div>
+</form>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand Name</th>
+            <th>Short Name</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for company in companies %}
+        <form method="POST" action="/update_company/{{ company.company_id }}" class="update-form">
+            <tr>
+                <td>{{ company.company_id }}</td>
+                <td>
+                    <input type="text" name="brand_name" value="{{ company.brand_name }}" class="edit-field" style="display:none;">
+                    <span class="view-field">{{ company.brand_name }}</span>
+                </td>
+                <td>
+                    <input type="text" name="short_name" value="{{ company.short_name }}" class="edit-field" style="display:none;">
+                    <span class="view-field">{{ company.short_name }}</span>
+                </td>
+                <td>
+                    <select name="category" class="edit-field" style="display:none;">
+                        <option value="AA" {% if company.category == 'AA' %}selected{% endif %}>AA</option>
+                        <option value="AB" {% if company.category == 'AB' %}selected{% endif %}>AB</option>
+                        <option value="BA" {% if company.category == 'BA' %}selected{% endif %}>BA</option>
+                        <option value="BB" {% if company.category == 'BB' %}selected{% endif %}>BB</option>
+                        <option value="AC" {% if company.category == 'AC' %}selected{% endif %}>AC</option>
+                        <option value="CA" {% if company.category == 'CA' %}selected{% endif %}>CA</option>
+                        <option value="BC" {% if company.category == 'BC' %}selected{% endif %}>BC</option>
+                        <option value="CB" {% if company.category == 'CB' %}selected{% endif %}>CB</option>
+                        <option value="CC" {% if company.category == 'CC' %}selected{% endif %}>CC</option>
+                    </select>
+                    <span class="view-field">{{ company.category }}</span>
+                </td>
+                <td>
+                    <select name="type_c" class="edit-field" style="display:none;">
+                        <option value="A" {% if company.type_c == 'A' %}selected{% endif %}>A</option>
+                        <option value="B" {% if company.type_c == 'B' %}selected{% endif %}>B</option>
+                    </select>
+                    <span class="view-field">{{ company.type_c }}</span>
+                </td>
+                <td>
+                    {% if user_role == 'admin' %}
+                        <button type="button" class="edit-btn" onclick="enableEditing(this)">Edit</button>
+                        <button type="submit" class="save-btn" style="display:none;" onclick="return validateRow(this)">Save</button>
+                    {% else %}
+                        <span>Read-only</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </form>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function enableEditing(button) {
+        const row = button.closest('tr');
+
+        row.querySelectorAll('.edit-field').forEach(input => {
+            input.style.display = 'inline-block';
+        });
+        row.querySelectorAll('.view-field').forEach(span => {
+            span.style.display = 'none';
+        });
+
+        button.style.display = 'none';
+
+        row.querySelector('.save-btn').style.display = 'inline-block';
+    }
+
+    document.getElementById('add-company-form').addEventListener('submit', function (event) {
+        const brandName = document.getElementById('brand-name').value.trim();
+        const errorMessage = document.getElementById('error-message');
+
+        if (brandName === '') {
+            errorMessage.textContent = 'Brand Name cannot be empty.';
+            event.preventDefault();
+            return false;
+        }
+
+        errorMessage.textContent = ''; 
+    });
+
+    function validateRow(saveButton) {
+        const row = saveButton.closest('tr');
+        const brandName = row.querySelector('input[name="brand_name"]').value.trim();
+
+        if (brandName === '') {
+            alert('Brand Name cannot be empty.');
+            return false;
+        }
+
+        return true; 
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #a30330; /* Цвет фона аналогичный окну входа */
+    color: #fff; /* Белый текст */
+}
+
+.container {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #670220; /* Темный фон контейнера */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h1 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff; /* Белый фон таблицы */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #a30330; /* Цвет заголовков */
+    color: #fff;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tr:hover {
+    background-color: #f2f2f2;
+}
+
+.table th {
+    font-weight: bold;
+}
+
+.form-group input, .form-group button {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.form-group button {
+    background-color: #a30330;
+    color: #fff;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #870224;
+}

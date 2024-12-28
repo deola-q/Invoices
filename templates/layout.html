@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            /* height: 100vh; */
+        }
+        .sidebar {
+            width: 20%;
+            background-color: #8EAD0E;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .sidebar button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #738d0a;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .sidebar button:hover {
+            background-color: #83a10b;
+        }
+        .content {
+            width: 80%;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group input {
+            width: calc(100% - 120px);
+            padding: 5px;
+            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #222222;
+            color: white;
+            padding: 8px;;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.8em;
+        }
+        button {
+        color: white;
+        cursor: pointer; 
+        background-color: #738d0a;
+
+        ;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Главная панель</h2>
+            Выберите таблицу из базы данных для просмотра и редактирования:<p>
+            <button onclick="location.href='/company'">Company</button>
+            <button onclick="location.href='/product'">Product</button>
+            <button onclick="location.href='/invoice'">Invoice</button>
+            <button onclick="location.href='/customers'">Customer</button>
+            <!-- <button onclick="location.href='/responsible'">Responsible</button> -->
+            <button onclick="location.href='/invoice_item'">Item</button>
+            Посмотреть на состав накладных по фильтрам:
+            <button onclick="location.href='/filtered_invoice_items'">Накладные</button>
+            Посмотреть на статистики:
+            <button onclick="location.href='/statistics'">Статистическае данные</button>
+
+
+
+        </div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <!-- <footer>Панель администратора</footer> -->
+</body>
+</html>

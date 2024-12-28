@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Товары</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    {% if user_role == 'admin' %}
+    <form method="POST" action="/add_product">
+        <div class="form-group" style="display: flex; gap: 10px;">
+            <input type="text" name="name" placeholder="Product Name" required>
+            <!-- <input type="text" name="category" placeholder="Category" required> -->
+            <select name="category" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="number" name="batch_num" placeholder="Batch Number" required>
+            <input type="number" step="0.01" name="price" placeholder="Price" required>
+            <input type="number" name="company_id" placeholder="Company ID" required>
+            <button type="submit">Add</button>
+        </div>
+    </form>
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Batch Number</th>
+                <th>Price</th>
+                <th>Company ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <form method="POST" action="/update_product/{{ product.product_id }}">
+                <tr>
+                    <td>{{ product.product_id }}</td>
+                    <td>
+                        <input type="text" name="name" value="{{ product.name }}" class="edit-field" style="display:none;">
+                        <span class="view-field">{{ product.name }}</span>
+                    </td>
+                    <td>
+                        <input type="text" name="category" value="{{ product.category }}" class="edit-field" style="display:none;">
+                        <span class="view-field">{{ product.category }}</span>
+                    </td>
+                    <td>
+                        <input type="number" name="batch_num" value="{{ product.batch_num }}" class="edit-field" style="display:none;">
+                        <span class="view-field">{{ product.batch_num }}</span>
+                    </td>
+                    <td>
+                        <input type="number" step="0.01" name="price" value="{{ product.price }}" class="edit-field" style="display:none;">
+                        <span class="view-field">{{ product.price }}</span>
+                    </td>
+                    <td>
+                        <input type="number" name="company_id" value="{{ product.company_id }}" class="edit-field" style="display:none;">
+                        <span class="view-field">{{ product.company_id }}</span>
+                    </td>
+                    <td>
+                        {% if user_role == 'admin' %}
+                        <button type="button" class="edit-btn" onclick="enableEditing(this)">Edit</button>
+                        <button type="submit" class="save-btn" style="display:none;">Save</button>
+                        {% else %}
+                        <span>Read-only</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </form>
+            {% endfor %}
+        </tbody>
+    </table>
+
+  
+    <script>
+        function enableEditing(button) {
+            const row = button.closest('tr');
+
+            // Показываем поля ввода
+            row.querySelectorAll('.edit-field').forEach(input => {
+                input.style.display = 'inline-block';
+            });
+            // Скрываем текстовые значения
+            row.querySelectorAll('.view-field').forEach(span => {
+                span.style.display = 'none';
+            });
+            button.style.display = 'none';
+            row.querySelector('.save-btn').style.display = 'inline-block';
+        }
+    </script>
+{% endblock %}
+

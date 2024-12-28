@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Накладные</h1>
+    <form method="POST" action="/add_invoice">
+        <div class="form-group" style="display: flex; gap: 10px;">
+            <input type="number" name="customer_id" placeholder="Customer ID" required>
+            <input type="date" name="purchase_date" required>
+            <input type="number" name="worker_id" placeholder="Worker ID" required>
+            <button type="submit">Add</button>
+        </div>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer ID</th>
+                <th>Purchase Date</th>
+                <th>Worker ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices.items %} {# .items потому что paginate возвращает объект, содержащий записи #}
+            <tr>
+                <td>{{ invoice.invoice_number }}</td>
+                <td>{{ invoice.customer_id }}</td>
+                <td>{{ invoice.purchase_date }}</td>
+                <td>{{ invoice.worker_id }}</td>
+                <td>
+                    <form method="POST" action="/delete_invoice/{{ invoice.invoice_number }}" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Постраничная навигация -->
+    <div style="margin-top: 20px;">
+        {% if invoices.has_prev %}
+            <a href="{{ url_for('invoice_index', page=invoices.prev_num) }}">Предыдущая</a>
+        {% endif %}
+
+        <span>Страница {{ invoices.page }} из {{ invoices.pages }}</span>
+
+        {% if invoices.has_next %}
+            <a href="{{ url_for('invoice_index', page=invoices.next_num) }}">Следующая</a>
+        {% endif %}
+    </div>
+
+{% endblock %}
